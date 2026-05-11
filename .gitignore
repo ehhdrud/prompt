@@ -1,0 +1,23 @@
+# Claude Code local settings
+**/.claude/settings.local.json
+
+# Dependencies
+node_modules/
+
+# npm
+.npmrc
+*.log
+npm-debug.log*
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp

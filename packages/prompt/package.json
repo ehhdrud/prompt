@@ -1,0 +1,35 @@
+{
+  "name": "@ehhdrud/prompt",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Claude Code / Codex 프롬프트 동기화 CLI",
+  "bin": {
+    "prompt": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "node bin/cli.js sync --dry-run"
+  },
+  "keywords": [
+    "claude",
+    "codex",
+    "prompt",
+    "cli"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^12.0.0",
+    "fs-extra": "^11.2.0",
+    "chalk": "^5.3.0",
+    "degit": "^2.8.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ehhdrud/prompt.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
