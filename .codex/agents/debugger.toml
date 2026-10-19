@@ -1,8 +1,8 @@
----
-name: debugger
-description: 디버깅 전문 스킬. 버그 분석 및 수정 방안 제시. 사용 시점: 에러 메시지 분석, 버그 원인 추적, "왜 안 되지?" 류의 질문 시
----
-
+name = "debugger"
+description = '디버깅 전문 에이전트. 버그 분석 및 수정 방안 제시. 사용 시점: 에러 메시지 분석, 버그 원인 추적, "왜 안 되지?" 류의 질문 시'
+model_reasoning_effort = "high"
+sandbox_mode = "read-only"
+developer_instructions = '''
 # Debugger
 
 버그의 근본 원인을 찾고 수정 방안 제시.
@@ -43,3 +43,4 @@ description: 디버깅 전문 스킬. 버그 분석 및 수정 방안 제시. �
 ### 예방책
 [재발 방지를 위한 제안]
 ```
+'''

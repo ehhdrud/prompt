@@ -9,6 +9,7 @@ Claude Code / Codex 프롬프트 관리용 개인 레포. `.claude/`와 `.codex/
 - `.claude/skills/` — Claude Code 스킬 정의 (SKILL.md)
 - `.claude/agents/` — 서브에이전트 정의
 - `.codex/skills/` — Codex 스킬 정의
+- `.codex/agents/` — Codex 서브에이전트 정의 (TOML)
 - `packages/prompt/` — 동기화 CLI
 - `README.md` — 전체 문서 (레포 구조, 작성법, 동기화 정책)
 - `GUIDE.md` — 설정 및 사용 가이드

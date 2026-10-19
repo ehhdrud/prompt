@@ -8,7 +8,7 @@ const program = new Command();
 program
   .name('prompt')
   .description('Claude Code / Codex 프롬프트 동기화 CLI')
-  .version('0.0.1');
+  .version('0.0.2');
 
 program
   .command('sync')

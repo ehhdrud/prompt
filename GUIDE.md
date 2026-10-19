@@ -22,6 +22,8 @@ echo "@ehhdrud:registry=https://npm.pkg.github.com" >> ~/.npmrc
 echo "//npm.pkg.github.com/:_authToken=발급받은토큰" >> ~/.npmrc
 ```
 
+> 토큰 값에 따옴표나 이스케이프 문자가 섞이지 않도록 `_authToken=ghp_...` 형태로 입력한다.
+
 #### 3. .npmrc 확인
 
 ```bash
@@ -44,6 +46,8 @@ cat ~/.npmrc
 # 프로젝트 폴더에서
 pnpm dlx @ehhdrud/prompt sync
 ```
+
+> CLI는 `ehhdrud/prompt` 레포를 직접 clone하므로, npm 토큰과 별개로 해당 레포의 읽기 권한과 git 인증이 필요하다.
 
 ### 1.3 바로 사용
 

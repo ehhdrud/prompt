@@ -36,14 +36,12 @@ prompt/                          # 개인 프롬프트 레포
 │   │   ├── document/SKILL.md        # 문서화 (research/plan/task)
 │   │   ├── document/FORMAT.md       # 문서화 타입별 출력 형식
 │   │   ├── worktree/SKILL.md        # Git worktree 관리
-│   │   ├── daily-log/SKILL.md       # 노션 캘린더 일일 기록 / 주간 요약
-│   │   ├── review/SKILL.md          # 구현 코드 리뷰 라우팅 (FE/BE)
+│   │   ├── notion-log/SKILL.md      # 노션 달력 일일 기록 + 주간 요약
+│   │   ├── review/SKILL.md          # 변경 코드 구조 검토 및 리팩터링
 │   │   ├── skill-creator/           # 스킬 생성 가이드
 │   │   └── subagent-creator/        # 서브에이전트 생성 가이드
 │   │
 │   ├── agents/                  # 서브에이전트 정의
-│   │   ├── fe-reviewer.md       # FE 코드 리뷰 전문 (sonnet)
-│   │   ├── be-reviewer.md       # BE 코드 리뷰 전문 (sonnet)
 │   │   ├── debugger.md          # 버그 분석 전문 (opus)
 │   │   └── refactorer.md        # 리팩토링 전문 (sonnet)
 │   │
@@ -51,19 +49,21 @@ prompt/                          # 개인 프롬프트 레포
 │
 ├── .codex/                      # Codex 프로젝트로 동기화되는 폴더
 │   │
-│   └── skills/                  # Codex 스킬 정의
-│       ├── summary/SKILL.md         # 변경사항 요약 정리
-│       ├── summary/FORMAT.md        # 요약 형식 규칙
-│       ├── branching/SKILL.md       # Git 브랜치 전략 관리
-│       ├── commit/SKILL.md          # 커밋 메시지 작성
-│       ├── document/SKILL.md        # 문서화 (research/plan/task)
-│       ├── document/FORMAT.md       # 문서화 타입별 출력 형식
-│       ├── worktree/SKILL.md        # Git worktree 관리
-│       ├── daily-log/SKILL.md       # 노션 캘린더 일일 기록 / 주간 요약
-│       ├── review/SKILL.md          # 구현 코드 리뷰 (FE/BE)
-│       ├── review/references/       # FE/BE 리뷰 기준
-│       ├── debugger/SKILL.md        # 버그 분석
-│       └── refactorer/SKILL.md      # 리팩토링
+│   ├── skills/                  # Codex 스킬 정의
+│   │   ├── summary/SKILL.md         # 변경사항 요약 정리
+│   │   ├── summary/FORMAT.md        # 요약 형식 규칙
+│   │   ├── branching/SKILL.md       # Git 브랜치 전략 관리
+│   │   ├── commit/SKILL.md          # 커밋 메시지 작성
+│   │   ├── document/SKILL.md        # 문서화 (research/plan/task)
+│   │   ├── document/FORMAT.md       # 문서화 타입별 출력 형식
+│   │   ├── worktree/SKILL.md        # Git worktree 관리
+│   │   ├── notion-log/SKILL.md      # 노션 달력 일일 기록 + 주간 요약
+│   │   ├── review/SKILL.md          # 변경 코드 구조 검토 및 리팩터링
+│   │   └── review/references/       # 조건부 스타일 규칙 (Tailwind v4 등)
+│   │
+│   └── agents/                  # Codex 서브에이전트 정의 (TOML)
+│       ├── debugger.toml        # 버그 분석 전문 (read-only)
+│       └── refactorer.toml      # 리팩토링 전문 (read-only)
 │
 ├── .gitignore
 └── README.md   # 현재 문서
@@ -82,8 +82,8 @@ prompt/                          # 개인 프롬프트 레포
 | `/branching` | Git 브랜치 전략 관리 | "브랜치 만들어", "릴리즈 시작" |
 | `/commit` | 커밋 메시지 작성 | "커밋해줘" |
 | `/worktree` | Git worktree 관리 | "워크트리", "병렬 작업" |
-| `/daily-log` | 노션 캘린더 일일 기록 / 주간 요약 | "노션에 올려", "일일 기록", "daily-log summary", "주간 요약" |
-| `/review` | 구현 코드 리뷰 (FE/BE 라우팅) | "리뷰", "검토", "구현 점검" |
+| `/notion-log` | 현재 레포 내 커밋을 노션 달력에 일일 기록 + 주간 요약 | "노션에 올려", "노션로그", "일일 기록", "주간 요약" |
+| `/review` | 변경 코드 구조 검토, 리팩터링 및 검증 | "리뷰", "검토", "코드 점검" |
 
 > **summary vs document Task**: `/summary`는 간단한 줄글 요약, `/document task`는 AS-IS/TO-BE 구조화 문서.
 
@@ -91,8 +91,6 @@ prompt/                          # 개인 프롬프트 레포
 
 | 에이전트 | 모델 | 용도 |
 |----------|------|------|
-| `fe-reviewer` | sonnet | FE 코드 리뷰 (패턴 통일, 확장성, 재사용성, SSOT, 스타일) |
-| `be-reviewer` | sonnet | BE 코드 리뷰 (일관성, 검증·보안, 정확성·트랜잭션, 쿼리 기본) |
 | `debugger` | opus | 복잡한 버그 분석 |
 | `refactorer` | sonnet | 코드 구조 개선 |
 
@@ -105,10 +103,15 @@ prompt/                          # 개인 프롬프트 레포
 | `branching` | Git 브랜치 전략 관리 | "브랜치 만들어", "릴리즈 시작" |
 | `commit` | 커밋 메시지 작성 | "커밋해줘" |
 | `worktree` | Git worktree 관리 | "워크트리", "병렬 작업" |
-| `daily-log` | 노션 캘린더 일일 기록 / 주간 요약 | "노션에 올려", "일일 기록", "daily-log summary", "주간 요약" |
-| `review` | 구현 코드 리뷰 (FE/BE 기준 적용) | "리뷰", "검토", "구현 점검" |
-| `debugger` | 버그 분석 | "왜 안 돼?", "에러 원인 찾아줘" |
-| `refactorer` | 코드 구조 개선 | "리팩토링", "이 코드 깔끔하게" |
+| `notion-log` | 현재 레포 내 커밋을 노션 달력에 일일 기록 + 주간 요약 | "노션에 올려", "노션로그", "일일 기록", "주간 요약" |
+| `review` | 변경 코드 구조 검토, 리팩터링 및 검증 | "리뷰", "검토", "코드 점검" |
+
+### Codex Agents
+
+| 에이전트 | 추론 강도 | 용도 |
+|----------|-----------|------|
+| `debugger` | high | 복잡한 버그 분석 |
+| `refactorer` | medium | 코드 구조 개선 |
 
 ---
 
@@ -140,10 +143,13 @@ prompt (원본 레포)
                                 └── my-debugger.md    ← 유지 (원본에 없음)
 
 .codex/            →        .codex/
-└── skills/                 └── skills/
-    ├── commit/                 ├── commit/      ← 덮어쓰기
-    ├── review/                 ├── review/      ← 덮어쓰기
-    └── debugger/               └── my-custom/   ← 유지 (원본에 없음)
+├── skills/                 ├── skills/
+│   ├── commit/             │   ├── commit/      ← 덮어쓰기
+│   └── review/             │   ├── review/      ← 덮어쓰기
+│                           │   └── my-custom/   ← 유지 (원본에 없음)
+└── agents/                 └── agents/
+    └── debugger.toml           ├── debugger.toml     ← 덮어쓰기
+                                └── my-agent.toml     ← 유지 (원본에 없음)
 ```
 
 ---
@@ -153,6 +159,7 @@ prompt (원본 레포)
 - **Claude Skill 작성**: `/skill-creator` 스킬 참조 (`.claude/skills/skill-creator/SKILL.md`)
 - **Agent 작성**: `/subagent-creator` 스킬 참조 (`.claude/skills/subagent-creator/SKILL.md`)
 - **Codex Skill 작성**: Codex 내장 `skill-creator` 스킬 기준으로 `.codex/skills/{name}/SKILL.md` 작성
+- **Codex Agent 작성**: `.codex/agents/{name}.toml`에 `name`, `description`, `developer_instructions` 필수 키로 작성 ([Codex Subagents](https://developers.openai.com/codex/subagents))
 
 ### 문서 업데이트 필수
 
@@ -160,7 +167,7 @@ prompt (원본 레포)
 > 1. **레포 구조** (섹션 2) - 새 파일 경로 추가
 > 2. **현재 구성 요소** (섹션 3) - Skills 또는 Agents 테이블에 추가
 >
-> ※ 동기화 CLI는 GitHub 레포를 직접 clone하므로, main 브랜치에 커밋만 올라가면 다른 프로젝트에서 sync로 받을 수 있다.
+> ※ 동기화 CLI는 GitHub 레포를 직접 clone하므로, main 브랜치에 커밋만 반영되면 다른 프로젝트에서 sync로 받을 수 있다.
 > `npm publish`는 `packages/prompt/` 내부 코드(CLI 로직)가 변경된 경우에만 필요하다.
 > 현재 CLI는 `.claude/`와 `.codex/`를 함께 동기화한다.
 

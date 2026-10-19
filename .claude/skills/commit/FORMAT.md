@@ -74,11 +74,11 @@ Version: <version>
 
 **예시:**
 ```
-다중뷰 모드에서 뷰별 측정 데이터 표시 기능 구현
+목록 화면에서 항목별 상세 정보 표시 기능 구현
 
-- view_data 타입 및 Store 상태 추가
-- NativeViewer에 viewIndex prop 추가
-- 다중뷰 전용 오버레이 컴포넌트 신규 구현
+- item_data 타입 및 Store 상태 추가
+- ItemList에 selectedIndex prop 추가
+- 상세 정보 패널 컴포넌트 신규 구현
 ```
 
 ---

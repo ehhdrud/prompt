@@ -154,7 +154,7 @@ export async function sync(options = {}) {
   }
 }
 
-const TEXT_EXTENSIONS = new Set(['.md', '.json', '.yaml', '.yml', '.txt', '.js', '.ts', '.mjs', '.py', '.sh']);
+const TEXT_EXTENSIONS = new Set(['.md', '.json', '.toml', '.yaml', '.yml', '.txt', '.js', '.ts', '.mjs', '.py', '.sh']);
 
 function isTextFile(filePath) {
   return TEXT_EXTENSIONS.has(path.extname(filePath).toLowerCase());
