@@ -1,10 +1,10 @@
 {
   "name": "@ehhdrud/prompt",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "description": "Claude Code / Codex 프롬프트 동기화 CLI",
   "bin": {
-    "prompt": "bin/cli.js"
+    "ehhdrud-prompt": "bin/cli.js"
   },
   "files": [
     "bin",

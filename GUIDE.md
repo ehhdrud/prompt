@@ -100,13 +100,29 @@ npm login --registry=https://npm.pkg.github.com
 ### 2.3 패키지 배포
 
 ```bash
+# 1. 버전 올리기: VERSION, packages/prompt/package.json, bin/cli.js의 .version()을 같은 값으로 patch 업 후 커밋·push
+
+# 2. 배포
 cd packages/prompt
-
-# 버전 올리기 (patch: 0.0.1 → 0.0.2)
-npm version patch
-
-# 배포
 npm publish
+
+# 3. 배포 확인 (새 버전이 목록에 있어야 함)
+npm view @ehhdrud/prompt versions --registry https://npm.pkg.github.com
 ```
 
 성공 시 `https://github.com/ehhdrud?tab=packages`에서 확인 가능.
+
+### 2.4 배포 전 체크리스트
+
+- [ ] **`bin` 이름이 OS 기본 명령과 겹치지 않는가** — 현재 `ehhdrud-prompt`. `prompt`, `sync`, `find`, `start`, `help` 같은 이름은 금지
+- [ ] `VERSION`, `package.json`, `bin/cli.js`의 버전이 모두 같은가
+- [ ] 배포 후 Windows에서 실제 실행해 출력이 나오는가
+
+```bash
+# 빈 폴더에서 실행 → "🔄 prompt 동기화 시작..."이 출력되어야 정상
+pnpm dlx @ehhdrud/prompt sync --dry-run
+```
+
+> **주의 (v0.0.3에서 수정됨):** v0.0.2까지 `bin` 이름이 `prompt`였는데, Windows cmd 내장 명령 `prompt`와 충돌했다.
+> `pnpm dlx @ehhdrud/prompt sync`가 설치 로그만 찍고 에러 없이 끝나면 이 문제다 (CLI 대신 cmd 내장 명령이 실행됨).
+> 패키지 이름(`@ehhdrud/prompt`)과 `bin` 이름은 별개이며, `bin`이 하나뿐이면 `pnpm dlx`가 자동으로 그것을 실행하므로 사용 명령은 바뀌지 않는다.

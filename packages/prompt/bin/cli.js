@@ -6,9 +6,9 @@ import { sync } from '../src/sync.js';
 const program = new Command();
 
 program
-  .name('prompt')
+  .name('ehhdrud-prompt')
   .description('Claude Code / Codex 프롬프트 동기화 CLI')
-  .version('0.0.2');
+  .version('0.0.3');
 
 program
   .command('sync')
