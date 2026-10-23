@@ -38,6 +38,8 @@ prompt/                          # 개인 프롬프트 레포
 │   │   ├── worktree/SKILL.md        # Git worktree 관리
 │   │   ├── notion-log/SKILL.md      # 노션 달력 일일 기록 + 주간 요약
 │   │   ├── review/SKILL.md          # 변경 코드 구조 검토 및 리팩터링
+│   │   ├── metaprompt/SKILL.md      # 공식 가이드 기반 프롬프트 설계·작성·개선
+│   │   ├── metaprompt/references/   # Anthropic·OpenAI·Claude Code 프롬프팅 가이드 요약
 │   │   ├── skill-creator/           # 스킬 생성 가이드
 │   │   └── subagent-creator/        # 서브에이전트 생성 가이드
 │   │
@@ -59,7 +61,9 @@ prompt/                          # 개인 프롬프트 레포
 │   │   ├── worktree/SKILL.md        # Git worktree 관리
 │   │   ├── notion-log/SKILL.md      # 노션 달력 일일 기록 + 주간 요약
 │   │   ├── review/SKILL.md          # 변경 코드 구조 검토 및 리팩터링
-│   │   └── review/references/       # 조건부 스타일 규칙 (Tailwind v4 등)
+│   │   ├── review/references/       # 조건부 스타일 규칙 (Tailwind v4 등)
+│   │   ├── metaprompt/SKILL.md      # 공식 가이드 기반 프롬프트 설계·작성·개선
+│   │   └── metaprompt/references/   # Anthropic·OpenAI·Claude Code 프롬프팅 가이드 요약
 │   │
 │   └── agents/                  # Codex 서브에이전트 정의 (TOML)
 │       ├── debugger.toml        # 버그 분석 전문 (read-only)
@@ -84,6 +88,7 @@ prompt/                          # 개인 프롬프트 레포
 | `/worktree` | Git worktree 관리 | "워크트리", "병렬 작업" |
 | `/notion-log` | 현재 레포 내 커밋을 노션 달력에 일일 기록 + 주간 요약 | "노션에 올려", "노션로그", "일일 기록", "주간 요약" |
 | `/review` | 변경 코드 구조 검토, 리팩터링 및 검증 | "리뷰", "검토", "코드 점검" |
+| `/metaprompt` | 공식 프롬프팅 가이드(Anthropic·OpenAI) 기반 프롬프트 설계·작성·진단, `update`로 레퍼런스 갱신 | "프롬프트 작성", "프롬프트 개선", "시스템 프롬프트", "메타프롬프트" |
 
 > **summary vs document Task**: `/summary`는 간단한 줄글 요약, `/document task`는 AS-IS/TO-BE 구조화 문서.
 
@@ -105,6 +110,7 @@ prompt/                          # 개인 프롬프트 레포
 | `worktree` | Git worktree 관리 | "워크트리", "병렬 작업" |
 | `notion-log` | 현재 레포 내 커밋을 노션 달력에 일일 기록 + 주간 요약 | "노션에 올려", "노션로그", "일일 기록", "주간 요약" |
 | `review` | 변경 코드 구조 검토, 리팩터링 및 검증 | "리뷰", "검토", "코드 점검" |
+| `metaprompt` | 공식 프롬프팅 가이드(Anthropic·OpenAI) 기반 프롬프트 설계·작성·진단, `update`로 레퍼런스 갱신 | "프롬프트 작성", "프롬프트 개선", "시스템 프롬프트", "메타프롬프트" |
 
 ### Codex Agents
 
@@ -160,6 +166,16 @@ prompt (원본 레포)
 - **Agent 작성**: `/subagent-creator` 스킬 참조 (`.claude/skills/subagent-creator/SKILL.md`)
 - **Codex Skill 작성**: Codex 내장 `skill-creator` 스킬 기준으로 `.codex/skills/{name}/SKILL.md` 작성
 - **Codex Agent 작성**: `.codex/agents/{name}.toml`에 `name`, `description`, `developer_instructions` 필수 키로 작성 ([Codex Subagents](https://developers.openai.com/codex/subagents))
+- **프롬프트 본문 작성·개선**: `/metaprompt` 스킬 사용. Anthropic·OpenAI 공식 가이드 요약(`references/`)을 근거로 작성한다
+
+### metaprompt 레퍼런스 갱신 규칙
+
+`/metaprompt`의 `references/`는 공식 문서 요약이라 모델 세대가 바뀌면 낡는다. 아래 규칙으로 갱신한다.
+
+- **갱신 위치**: 반드시 **이 레포에서** `/metaprompt update`를 실행하고 커밋한다. 각 프로젝트는 sync로 받는다. 프로젝트에서 고친 내용은 다음 sync 때 덮어써진다
+- **이벤트 기반**: 새 Claude/GPT 모델 출시 또는 사용 모델 변경 시 실행
+- **안전망**: 모델 변화가 없어도 분기 1회 실행. 변경이 없으면 기준일만 갱신된다
+- **자동 감지**: 레퍼런스 기준일이 6개월을 넘으면 스킬이 사용 시점에 공식 문서를 확인하고 갱신을 권한다
 
 ### 문서 업데이트 필수
 
